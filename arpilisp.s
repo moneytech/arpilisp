@@ -35,7 +35,7 @@
 
 	References
 
-	https;//www.raspberrypi.org
+	https://www.raspberrypi.org
 
 	https://www.raspbian.org
 	
@@ -59,7 +59,7 @@
 	amazing things about how Lisp can make computers do surprising, interesting
 	things.
 
-	Most people acknowledge Lisp's influences without knowing what they are exactly.
+	Most people acknowledge Lisp's influence without knowing what it is exactly.
 	Others are turned off by Lisp's weirdness.  Lisp continues to influence
 	programming languages today.  It's not as inaccessible, alien, or irrelevant as
 	you might believe.
@@ -101,10 +101,10 @@
 
 	nil
 
-	A symbol is just that: a name.  What the symbol represents depends on you, the
-	programmer.  In our list above, lettuce, tomato, oil, and vingear are symbols
-	for salad ingredients.  We sometimes refer to symbols as atoms.  Unlike lists,
-	atoms are not composed of parts. 
+	A symbol is just a name that represents something.  What the symbol represents
+	depends on you, the programmer.  In our list above, lettuce, tomato, oil, and
+	vinegar are symbols for salad ingredients.  We sometimes refer to symbols as
+	atoms.  Unlike lists, atoms are not composed of parts.
 
 	In Lisp, lists and atoms are called "S-expressions".  We also use just
 	"expression" to mean the same thing.
@@ -403,7 +403,7 @@
 	doesn't get evaluated.
 	
 	As a matter of good habit, we always put a final clause in a cond that has t for
-	a condition expression.  That way we assure ourselves that a cond expression
+	a condition clause's test.  That way we assure ourselves that a cond test
 	returns a value that we specify when all other clause tests are false.
 
 	Lisp isn't all special forms.  In fact, there are only a handful.  Most Lisp
@@ -726,7 +726,7 @@ lispstackbottom:
 	For simplicity of implementation, a practical value for nil is 0.  We store
 	nothing useful at memory location 0.
 
-        Side note: In fact, a Linux user program cannot store or load location 0.  The
+	Side note: In fact, a Linux user program cannot store or load location 0.  The
 	ARM Linux kernel doesn't allow it by design.  Doing so results in a segmentation
 	fault, which is an intentional thing.
 
@@ -855,7 +855,7 @@ freelist:
 	settings bit 1 to 1.  We have another use for bit 0, covered later.
 
 	We don't need to worry about decoding a marked cell to refer to its pointer for
-	a few reasons: our program is suspended during mark and sweep, we don't follow
+	a few reasons: our Lisp program is suspended during mark and sweep, we don't follow
 	reachable cells from a marked cell, and we only use the mark bit during the
 	marking phase of garbage collection.
 
@@ -983,7 +983,7 @@ freelist:
 	
                      allocated cell
 	                   |
-                           V
+	                   V
 	             +-----+-----+     +-----+-----+            +-----------+
 	freelist -+  | car | cdr |  +->| car | cdr ---> ... --->| car | cdr --->nil 
 	          |  +-----+-----+  |  +-----+-----+            +-----+-----+   
@@ -1056,7 +1056,7 @@ freelist:
 	symbol 1			 	 symbol 2
 	+-----------+------------+--------------+---- - - -
 	| length    | characters | padding      | length
-	+- 4 bytes -+- n bytes --+- <= 4 bytes -+---- - - -
+	+- 4 bytes -+- n bytes --+- < 4 bytes  -+---- - - -
 
 	We store symbol print names in a block of memory.  The traditional name for this
 	block is "obarray."
@@ -1381,7 +1381,7 @@ internbuffer:
 	abacus
 
 	* Let B be a cons cell in which the car points to symbol "beluga" and cdr points
-	to nil.  Printing A gives "(beluga . nil)".
+	to nil.  Printing B gives "(beluga . nil)".
 
 	B
 	+-----+-----+
@@ -2216,7 +2216,7 @@ greeting:
 	tool for iteration.  Don't be surprised when I state that Lisp solves iteration
 	quite elegantly.
 
-	Here's a common pattern in a Lisp function to iterates over a list:
+	Here's a common pattern in a Lisp function to iterate over a list:
 
 	* If the list is empty, stop and return a value indicating as much.
 
@@ -2448,7 +2448,7 @@ greeting:
 	     ((selfevalp expr)      expr)
 	     (t                     (quote errbadlistexpr)))))
 
-	The selfevalp function return true if an expression is self-evaluating, false 
+	The selfevalp function returns true if an expression is self-evaluating, false 
 	otherwise.
 
 	(define selfevalp
@@ -2465,7 +2465,7 @@ greeting:
 	If it fails to recognize an expression, it returns errbadlistexpr.
 	Examples:
 
-	(eval (quote ())
+	(eval (quote ()))
 	nil
 
 	(eval (quote t))
@@ -2955,7 +2955,7 @@ greeting:
 	Our assembly apply procedure implements these Lisp functions:
 
 	(define apply
-	  (lambda (fn args)
+	  (lambda (fn args env)
 	    (cond
 	      ((null (cdr (cdr fn))) nil)
 	      (t (apply-body (cdr (cdr fn)) (pairlis (car (cdr fn)) args env))))))
